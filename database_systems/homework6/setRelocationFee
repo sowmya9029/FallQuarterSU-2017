@@ -1,0 +1,21 @@
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `setRelocationFee`(in employeeID int,inout relocationfee int  )
+begin 
+DECLARE city INT;
+select city into city from offices where officeCode = (select officeCode from employees where employeeNumber = @employeeID);
+case city
+ when 'san francisco' THEN
+set relocationfee= 10000;
+when city ='Boston' THEN
+set relocationfee= 8000;
+when city ='London' THEN
+set relocationfee= 20000;
+else
+set relocationfee= 15000;
+End case;
+end

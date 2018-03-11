@@ -1,0 +1,18 @@
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `changeCreditLimit`(in customer int,in totalpayment double)
+BEGIN
+DECLARE payment double;
+DECLARE currentlimit double;
+
+SELECT count(amount) INTO payment
+FROM payments 
+WHERE customerNumber = @customer group by customerNumber; 
+IF payment < totalpayment THEN
+update customers set creditLimit = 2000+creditLimit  where customerNumber =@customer ;
+ END IF;
+END
